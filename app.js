@@ -173,11 +173,11 @@
   };
   function applyAccent(a){ document.body.dataset.accent=a; }
 
-  $('#launcherDl').onclick=()=>{
-    const v=(state.user&&state.user.version)||store.get('version','minimal');
-    $('#launcherDlSub').textContent='Selected: '+v.toUpperCase()+' — menu key '+(v==='minimal'?'Right Shift':'0')+'. Get the EXE from the GitHub release / launcher/dist folder.';
-    document.querySelector('[data-tab=versions]').click();
-  };
+  // launcher download card reflects chosen version (the <a> href does the real download)
+  document.querySelectorAll('input[name=ver]').forEach(r=>r.addEventListener('change',()=>{
+    const v=document.querySelector('input[name=ver]:checked').value;
+    $('#launcherDlSub').textContent='Windows · single .exe · '+v.toUpperCase()+' selected — menu key '+(v==='minimal'?'Right Shift':'0');
+  }));
 
   setInterval(()=>{ if(state.user){ state.user.hours=+(state.user.hours+1/3600).toFixed(3); persistLocal(); } },10000);
 

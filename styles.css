@@ -64,4 +64,43 @@ kbd{background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:2
 .ver{border:1px solid var(--glass-brd);border-radius:14px;padding:12px}
 .tag2{font-size:11px;border:1px solid var(--glass-brd);border-radius:99px;padding:2px 8px}
 footer{text-align:center;color:var(--muted);padding:20px}
+/* ---- LumiVisuals UI polish ---- */
+.orb{animation:drift 14s ease-in-out infinite alternate}
+.orb-b{animation-delay:-5s}.orb-c{animation-delay:-9s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.15)}}
+.hero{position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40%;background:conic-gradient(from 180deg,transparent 0 70%,rgba(255,255,255,.07) 85%,transparent 100%);animation:spin 12s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-logo{width:128px;border-radius:28px;box-shadow:0 0 0 1px var(--glass-brd),0 0 44px rgba(255,255,255,.25);animation:float 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1{font-size:clamp(40px,7vw,60px);margin:10px 0 4px;letter-spacing:-2px;background:linear-gradient(180deg,#fff,#9a9aa5);-webkit-background-clip:text;background-clip:text;color:transparent}
+body[data-accent="black"] .hero h1{background:linear-gradient(180deg,#fff,#555);-webkit-background-clip:text;background-clip:text}
+.primary{position:relative;overflow:hidden;transition:transform .15s,box-shadow .25s,filter .2s}
+.primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,255,255,.25);filter:brightness(1.06)}
+.primary::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);transition:left .5s}
+.primary:hover::after{left:130%}
+.ghost{transition:border-color .2s,background .2s,transform .15s}
+.ghost:hover{border-color:var(--accent);transform:translateY(-1px)}
+.card{transition:transform .2s,box-shadow .25s}
+.card:hover{transform:translateY(-2px);box-shadow:0 12px 48px rgba(0,0,0,.45)}
+.links button{transition:background .2s,transform .15s}
+.links button:hover:not(.active){background:rgba(255,255,255,.1)}
+.pill{transition:background .2s,transform .15s}.pill:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
+kbd{box-shadow:0 2px 0 rgba(0,0,0,.4)}
+.tab.active{animation:rise .3s cubic-bezier(.2,.8,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.modal-box{animation:popIn .28s cubic-bezier(.34,1.4,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(10px)}}
+.dl-grid{gap:12px}
+.dl{text-decoration:none}
+.dl.big-dl{display:flex;gap:14px;align-items:center;padding:18px;font-size:17px}
+.dl.big-dl b{font-size:19px}
+.dl-logo{display:flex;align-items:center;justify-content:center;width:52px;height:52px;flex:none;border-radius:16px;background:var(--accent-ink);color:var(--accent);font-size:24px;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.dl.static{cursor:default}
+.dl.static:hover{transform:none}
+.modal-box input:focus,.card input:focus,.card select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.user-chip img{box-shadow:0 0 0 2px var(--accent)}
+.ver{transition:border-color .2s,transform .15s}.ver:hover{border-color:var(--accent);transform:translateY(-2px)}
+::-webkit-scrollbar{width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:99px}::-webkit-scrollbar-track{background:transparent}
 code{background:rgba(255,255,255,.12);padding:2px 6px;border-radius:6px}
