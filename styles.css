@@ -101,6 +101,7 @@ kbd{box-shadow:0 2px 0 rgba(0,0,0,.4)}
 .dl.static:hover{transform:none}
 .modal-box input:focus,.card input:focus,.card select:focus{outline:2px solid var(--accent);outline-offset:1px}
 .user-chip img{box-shadow:0 0 0 2px var(--accent)}
+.big-code{font-size:26px;font-weight:900;letter-spacing:3px;text-align:center;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:12px;margin-top:12px;animation:popIn .3s cubic-bezier(.34,1.4,.64,1)}
 .ver{transition:border-color .2s,transform .15s}.ver:hover{border-color:var(--accent);transform:translateY(-2px)}
 ::-webkit-scrollbar{width:10px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:99px}::-webkit-scrollbar-track{background:transparent}
 code{background:rgba(255,255,255,.12);padding:2px 6px;border-radius:6px}

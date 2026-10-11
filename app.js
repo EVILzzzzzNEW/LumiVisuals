@@ -173,6 +173,23 @@
   };
   function applyAccent(a){ document.body.dataset.accent=a; }
 
+  async function makeLauncherCode(){
+    if(!state.user) return null;
+    const code = 'LUMI-'+Math.random().toString(36).slice(2,8).toUpperCase();
+    store.set('launcher_code',{code, name:state.user.name, avatar:state.user.avatar, uid:state.user.uid, ts:Date.now()});
+    if(state.useCloud){
+      try{ await state.sb.from('launcher_codes').insert({ code, uid: state.user.uid, name: state.user.name, avatar: state.user.avatar }); }catch(e){ console.warn(e); }
+    }
+    return code;
+  }
+  const glc = $('#getLauncherCode');
+  if(glc) glc.onclick = async ()=>{
+    if(!state.user){ alert('Login first.'); return; }
+    const code = await makeLauncherCode();
+    const out = $('#launcherCodeOut');
+    out.textContent = code; out.classList.remove('hidden');
+  };
+
   // launcher download card reflects chosen version (the <a> href does the real download)
   document.querySelectorAll('input[name=ver]').forEach(r=>r.addEventListener('change',()=>{
     const v=document.querySelector('input[name=ver]:checked').value;
