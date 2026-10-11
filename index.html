@@ -6,7 +6,6 @@
 <title>LumiVisuals — Visuals Client for Minecraft</title>
 <link rel="icon" href="public/logo.png" />
 <link rel="stylesheet" href="styles.css" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body data-accent="white">
 <div class="bg"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div></div>
@@ -24,13 +23,11 @@
     <button data-tab="settings">Settings</button>
   </nav>
   <div class="authbox">
-    <div id="userChip" class="user-chip hidden">
+    <div id="userChip" class="user-chip">
       <img id="chipAvatar" src="public/logo.png" alt="" />
       <span id="chipName">player</span>
       <span id="chipHours" class="hours">0h</span>
-      <button id="logoutBtn" class="ghost">Logout</button>
     </div>
-    <button id="authBtn" class="primary">Login / Register</button>
   </div>
 </header>
 
@@ -69,10 +66,10 @@
     <div class="glass card">
       <h2>How it works</h2>
       <ol class="steps">
-        <li>Create your LumiVisuals account (email + password).</li>
-        <li>Download the launcher setup and login — if you're already logged in here, just approve the launcher login.</li>
+        <li>Pick a profile name on this page — it's yours instantly, no login.</li>
+        <li>Download the launcher setup and enter the same name there.</li>
         <li>Choose <b>Minimal</b> or <b>Classic</b>, press <b>Launch</b>. The launcher checks Minecraft 1.21.11, installs Fabric, puts the right LumiVisuals mod in place, and starts the game with your profile name.</li>
-        <li>Your playtime, name and avatar sync between launcher and website.</li>
+        <li>Your playtime ticks up here and in the launcher, Steam-style.</li>
       </ol>
     </div>
   </section>
@@ -132,8 +129,8 @@
   <section id="tab-profile" class="tab">
     <div class="glass card">
       <h2>Profile</h2>
-      <div id="profileLocked"><p>Login to edit your name, avatar and see playtime.</p><button class="primary" id="profileLoginBtn">Login / Register</button></div>
-      <div id="profileOpen" class="hidden">
+      <div id="profileLocked" class="hidden"></div>
+      <div id="profileOpen">
         <div class="prof-row">
           <img id="avatarPreview" src="public/logo.png" alt="avatar" />
           <div>
@@ -146,7 +143,7 @@
         <div class="stats">
           <div><b id="statHours">0.0</b><span>hours played (Steam-style)</span></div>
           <div><b id="statVersion">minimal</b><span>chosen visuals</span></div>
-          <div><b id="statUser">—</b><span>account</span></div>
+          <div><b id="statUser">—</b><span>player</span></div>
         </div>
       </div>
     </div>
@@ -168,38 +165,12 @@
       </div>
       <button id="saveSettings" class="primary">Save settings</button>
       <span id="setSaved" class="ok hidden">Saved ✓</span>
-      <p class="muted">Settings sync to your account when logged in, otherwise stored on this device. The launcher reads the same values.</p>
-    </div>
-    <div class="glass card">
-      <h2>Launcher login</h2>
-      <p class="muted">Generate a one-time code and enter it in the launcher to log in there.</p>
-      <button id="getLauncherCode" class="primary">Get launcher code</button>
-      <p id="launcherCodeOut" class="hidden big-code"></p>
+      <p class="muted">Everything is stored on this device. The launcher reads the same values.</p>
     </div>
   </section>
 </main>
 
-<!-- AUTH MODAL -->
-<div id="authModal" class="modal hidden">
-  <div class="glass modal-box">
-    <h2 id="authTitle">Login to LumiVisuals</h2>
-    <p id="launcherApproveBox" class="hidden">Launcher is waiting — logging in here will let you approve it with one tap.</p>
-    <label>Email<input id="authEmail" type="email" placeholder="you@mail.com" /></label>
-    <label>Password<input id="authPass" type="password" placeholder="••••••••" /></label>
-    <div class="cta-row">
-      <button id="loginGo" class="primary">Login</button>
-      <button id="regGo" class="ghost">Register</button>
-    </div>
-    <div id="launcherApproveRow" class="hidden cta-row">
-      <button id="approveLauncher" class="primary">Approve launcher login ✓</button>
-    </div>
-    <p id="authErr" class="err"></p>
-    <button id="authClose" class="ghost">Close</button>
-  </div>
-</div>
-
 <footer>© 2026 LumiVisuals</footer>
-<script src="supabase-config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
