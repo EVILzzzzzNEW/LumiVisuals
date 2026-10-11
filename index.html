@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LumiVisuals — Visuals Client for Minecraft</title>
+<link rel="icon" href="public/logo.png" />
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body data-accent="white">
+<div class="bg"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div></div>
+
+<header class="glass nav">
+  <div class="brand">
+    <img src="public/logo.png" alt="LumiVisuals logo" class="logo" />
+    <div><div class="brand-name">LumiVisuals</div><div class="brand-sub">Visuals Client for Minecraft 1.21.11</div></div>
+  </div>
+  <nav class="links">
+    <button data-tab="home" class="active">Home</button>
+    <button data-tab="versions">Versions</button>
+    <button data-tab="download">Download</button>
+    <button data-tab="profile">Profile</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+  <div class="authbox">
+    <div id="userChip" class="user-chip hidden">
+      <img id="chipAvatar" src="public/logo.png" alt="" />
+      <span id="chipName">player</span>
+      <span id="chipHours" class="hours">0h</span>
+      <button id="logoutBtn" class="ghost">Logout</button>
+    </div>
+    <button id="authBtn" class="primary">Login / Register</button>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="tab-home" class="tab active">
+    <div class="hero glass">
+      <img src="public/logo.png" class="hero-logo" alt="LumiVisuals" />
+      <h1>LumiVisuals</h1>
+      <p class="tag">A clean, fast visuals client for Minecraft <b>1.21.11 + Fabric</b>.<br/>Pick a look, press one key, play.</p>
+      <div class="cta-row">
+        <button class="primary big" data-goto="download">Download launcher</button>
+        <button class="ghost big" data-goto="versions">Compare versions</button>
+      </div>
+      <div class="pill-row">
+        <span class="pill">Offline username support</span>
+        <span class="pill">Fabric auto-install</span>
+        <span class="pill">Playtime tracking</span>
+        <span class="pill">White / Black accents</span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="glass card">
+        <h2>Minimal</h2>
+        <p>Lightweight visuals. Clean HUD, menus and effects.</p>
+        <p class="key">Menu key: <kbd>Right Shift</kbd></p>
+        <button class="primary" data-goto="download">Get Minimal</button>
+      </div>
+      <div class="glass card">
+        <h2>Classic</h2>
+        <p>Full visuals pack. Rich modules, HUD and particles.</p>
+        <p class="key">Menu key: <kbd>0</kbd></p>
+        <button class="primary" data-goto="download">Get Classic</button>
+      </div>
+    </div>
+    <div class="glass card">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li>Create your LumiVisuals account (email + password).</li>
+        <li>Download the launcher setup and login — if you're already logged in here, just approve the launcher login.</li>
+        <li>Choose <b>Minimal</b> or <b>Classic</b>, press <b>Launch</b>. The launcher checks Minecraft 1.21.11, installs Fabric, puts the right LumiVisuals mod in place, and starts the game with your profile name.</li>
+        <li>Your playtime, name and avatar sync between launcher and website.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- VERSIONS -->
+  <section id="tab-versions" class="tab">
+    <div class="glass card">
+      <h2>Choose your visuals</h2>
+      <p>You can switch versions anytime in the launcher — even after first launch.</p>
+      <div class="grid2">
+        <div class="ver">
+          <h3>Minimal <span class="tag2">light</span></h3>
+          <ul><li>Clean menu + HUD</li><li>Lower resource use</li><li>Best for PvP</li></ul>
+          <p class="key">Open menu in-game: <kbd>Right Shift</kbd></p>
+          <label><input type="radio" name="ver" value="minimal" checked /> Select Minimal</label>
+        </div>
+        <div class="ver">
+          <h3>Classic <span class="tag2">full</span></h3>
+          <ul><li>Full module set</li><li>Particles, trails, themes</li><li>Best for showcases</li></ul>
+          <p class="key">Open menu in-game: <kbd>0</kbd></p>
+          <label><input type="radio" name="ver" value="classic" /> Select Classic</label>
+        </div>
+      </div>
+      <button id="saveVersion" class="primary">Save choice</button>
+      <span id="verSaved" class="ok hidden">Saved ✓</span>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="tab-download" class="tab">
+    <div class="glass card">
+      <h2>Download</h2>
+      <p id="dlNote">The launcher setup will be published here. For now you can download the mods directly.</p>
+      <div class="dl-grid">
+        <a class="dl glass" href="../mods/LumiVisuals-Minimal-3.0.jar" download>
+          <b>LumiVisuals Minimal 3.0</b><span>MC 1.21.11 · Fabric · menu: Right Shift</span>
+        </a>
+        <a class="dl glass" href="../mods/LumiVisuals-Classic-3.2.0.jar" download>
+          <b>LumiVisuals Classic 3.2.0</b><span>MC 1.21.11 · Fabric · menu: 0</span>
+        </a>
+        <button id="launcherDl" class="dl primary" type="button"><b>LumiVisuals Launcher Setup (.exe)</b><span id="launcherDlSub">Coming in Phase 2 — button wired, shows version + menu key</span></button>
+      </div>
+      <h3>First launch checklist (launcher does this for you)</h3>
+      <ol class="steps">
+        <li>Checks Minecraft 1.21.11 — downloads with progress bar + % if missing.</li>
+        <li>Installs Fabric loader.</li>
+        <li>Copies the chosen LumiVisuals mod + optional optimization mods.</li>
+        <li>Launches with your offline profile name.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PROFILE -->
+  <section id="tab-profile" class="tab">
+    <div class="glass card">
+      <h2>Profile</h2>
+      <div id="profileLocked"><p>Login to edit your name, avatar and see playtime.</p><button class="primary" id="profileLoginBtn">Login / Register</button></div>
+      <div id="profileOpen" class="hidden">
+        <div class="prof-row">
+          <img id="avatarPreview" src="public/logo.png" alt="avatar" />
+          <div>
+            <label>Profile name<input id="profileName" maxlength="16" /></label>
+            <label>Avatar (png/jpg)<input id="avatarFile" type="file" accept="image/*" /></label>
+            <button id="saveProfile" class="primary">Save</button>
+            <span id="profSaved" class="ok hidden">Saved ✓</span>
+          </div>
+        </div>
+        <div class="stats">
+          <div><b id="statHours">0.0</b><span>hours played (Steam-style)</span></div>
+          <div><b id="statVersion">minimal</b><span>chosen visuals</span></div>
+          <div><b id="statUser">—</b><span>account</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="tab">
+    <div class="glass card">
+      <h2>Settings</h2>
+      <label>Accent
+        <select id="accentSel"><option value="white">White</option><option value="black">Black</option></select>
+      </label>
+      <label>RAM for launcher (GB)<input id="ramInput" type="number" min="2" max="16" step="1" value="4" /></label>
+      <label class="row"><input type="checkbox" id="optSodium" checked /> Optimization: Sodium</label>
+      <label class="row"><input type="checkbox" id="optLithium" checked /> Optimization: Lithium</label>
+      <label class="row"><input type="checkbox" id="optFerrite" checked /> Optimization: FerriteCore</label>
+      <label class="row"><input type="checkbox" id="optSaturnium" /> Optimization: Saturnium</label>
+      <label class="row"><input type="checkbox" id="optShortcut" checked /> Installer: create desktop shortcut</label>
+      <button id="saveSettings" class="primary">Save settings</button>
+      <span id="setSaved" class="ok hidden">Saved ✓</span>
+      <p class="muted">Settings sync to your account when logged in, otherwise stored on this device. The launcher reads the same values.</p>
+    </div>
+    <div class="glass card">
+      <h2>Free hosting</h2>
+      <p>Deploy this folder to <b>Vercel</b> (free <code>*.vercel.app</code> subdomain) + <b>Supabase</b> backend. No hosting is literally "forever", but both free tiers stay up while active. See <code>README-DEPLOY.md</code>.</p>
+    </div>
+  </section>
+</main>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal hidden">
+  <div class="glass modal-box">
+    <h2 id="authTitle">Login to LumiVisuals</h2>
+    <p id="launcherApproveBox" class="hidden">Launcher is waiting — logging in here will let you approve it with one tap.</p>
+    <label>Email<input id="authEmail" type="email" placeholder="you@mail.com" /></label>
+    <label>Password<input id="authPass" type="password" placeholder="••••••••" /></label>
+    <div class="cta-row">
+      <button id="loginGo" class="primary">Login</button>
+      <button id="regGo" class="ghost">Register</button>
+    </div>
+    <div id="launcherApproveRow" class="hidden cta-row">
+      <button id="approveLauncher" class="primary">Approve launcher login ✓</button>
+    </div>
+    <p id="authErr" class="err"></p>
+    <button id="authClose" class="ghost">Close</button>
+  </div>
+</div>
+
+<footer>© 2026 LumiVisuals · <span id="backendBadge">local demo mode</span></footer>
+<script src="supabase-config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
