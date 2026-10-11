@@ -7,6 +7,15 @@
   };
   const state = { user: store.get('user', null), useCloud: false, sb: null };
 
+  // instant guest account — no login needed, survives refresh via localStorage
+  function makeGuest(){
+    return { uid:'guest-'+Math.random().toString(36).slice(2,10), guest:true,
+      email:'', name:'Guest'+Math.floor(1000+Math.random()*9000),
+      avatar:'public/logo.png', hours:0, version:store.get('version','minimal'),
+      accent:store.get('accent','white'), ram:store.get('ram',4) };
+  }
+  if(!state.user){ state.user = makeGuest(); persistLocal(); }
+
   try{
     const cfg = window.LUMI_SUPABASE;
     if (cfg && cfg.url && !cfg.url.includes('PASTE') && window.supabase) {
@@ -14,7 +23,7 @@
       state.useCloud = true;
       state.sb.auth.onAuthStateChange(async (ev, session)=>{
         const u = session && session.user;
-        if(u){ await pullProfile(u.id, u.email); } else { state.user=null; render(); }
+        if(u){ await pullProfile(u.id, u.email); } else if(state.user && !state.user.guest){ state.user=null; render(); }
       });
       state.sb.auth.getSession().then(async ({data})=>{
         const u = data.session && data.session.user;
@@ -51,7 +60,7 @@
   }
   async function pushProfile(){
     persistLocal();
-    if(state.useCloud && state.user){
+    if(state.useCloud && state.user && !state.user.guest){
       try{
         await state.sb.from('profiles').upsert({
           uid: state.user.uid, email: state.user.email, name: state.user.name,
@@ -103,28 +112,29 @@
   async function register(){
     const email=$('#authEmail').value.trim(), pass=$('#authPass').value;
     if(!email||pass.length<6){ $('#authErr').textContent='Password min 6 chars.'; return; }
+    const g = state.user && state.user.guest ? state.user : null; // carry guest over
     if(state.useCloud){
       const { data, error } = await state.sb.auth.signUp({ email, password: pass });
       if(error){ $('#authErr').textContent=error.message; return; }
       const u = data.user || (await state.sb.auth.getUser()).data.user;
-      state.user={uid:u.id,email:u.email,name:email.split('@')[0].slice(0,16),avatar:'public/logo.png',hours:0,version:'minimal',accent:'white',ram:4};
+      state.user={uid:u.id,email:u.email,name:(g&&g.name)||email.split('@')[0].slice(0,16),avatar:(g&&g.avatar)||'public/logo.png',hours:(g&&g.hours)||0,version:(g&&g.version)||'minimal',accent:(g&&g.accent)||'white',ram:(g&&g.ram)||4};
       await pushProfile(); closeAuth(); render();
     } else {
       const users=store.get('demo_users',{});
       if(users[email]){ $('#authErr').textContent='Exists — press Login.'; return; }
       users[email]=pass; store.set('demo_users',users);
-      state.user={uid:'demo-'+btoa(email),email,name:email.split('@')[0].slice(0,16),avatar:'public/logo.png',hours:0,version:'minimal',accent:'white',ram:4};
+      state.user={uid:'demo-'+btoa(email),email,name:(g&&g.name)||email.split('@')[0].slice(0,16),avatar:(g&&g.avatar)||'public/logo.png',hours:(g&&g.hours)||0,version:(g&&g.version)||'minimal',accent:(g&&g.accent)||'white',ram:(g&&g.ram)||4};
       persistLocal(); closeAuth(); render();
     }
   }
   $('#loginGo').onclick=login; $('#regGo').onclick=register;
   $('#logoutBtn').onclick=async()=>{
     if(state.useCloud) await state.sb.auth.signOut();
-    state.user=null; localStorage.removeItem('lumi_user'); render();
+    state.user=makeGuest(); persistLocal(); render();
   };
 
   $('#approveLauncher').onclick=async()=>{
-    if(!state.user){ $('#authErr').textContent='Login first.'; return; }
+    if(!state.user || state.user.guest){ $('#authErr').textContent='Create a free account first — your name and hours carry over.'; return; }
     const code = 'LUMI-'+Math.random().toString(36).slice(2,8).toUpperCase();
     store.set('launcher_code',{code, name:state.user.name, avatar:state.user.avatar, uid:state.user.uid, ts:Date.now()});
     if(state.useCloud){
@@ -184,7 +194,7 @@
   }
   const glc = $('#getLauncherCode');
   if(glc) glc.onclick = async ()=>{
-    if(!state.user){ alert('Login first.'); return; }
+    if(!state.user || state.user.guest){ alert('Create a free account first — your name and hours carry over.'); openAuth(); return; }
     const code = await makeLauncherCode();
     const out = $('#launcherCodeOut');
     out.textContent = code; out.classList.remove('hidden');
@@ -203,12 +213,16 @@
     applyAccent((u&&u.accent)||store.get('accent','white'));
     $('#accentSel').value=(u&&u.accent)||store.get('accent','white');
     if(u){
-      $('#authBtn').classList.add('hidden'); $('#userChip').classList.remove('hidden');
+      const registered = !u.guest;
+      $('#authBtn').classList.toggle('hidden', registered);
+      if(!registered) $('#authBtn').textContent='Save progress / Register';
+      $('#userChip').classList.remove('hidden');
       $('#chipName').textContent=u.name; $('#chipHours').textContent=(+u.hours).toFixed(1)+'h';
       $('#chipAvatar').src=u.avatar;
+      $('#logoutBtn').classList.toggle('hidden', !registered);
       $('#profileLocked').classList.add('hidden'); $('#profileOpen').classList.remove('hidden');
       $('#profileName').value=u.name; $('#avatarPreview').src=u.avatar;
-      $('#statHours').textContent=(+u.hours).toFixed(1); $('#statVersion').textContent=u.version; $('#statUser').textContent=u.email;
+      $('#statHours').textContent=(+u.hours).toFixed(1); $('#statVersion').textContent=u.version; $('#statUser').textContent=registered?u.email:'Guest · this device';
       const rv=document.querySelector(`input[name=ver][value="${u.version}"]`); if(rv) rv.checked=true;
     } else {
       $('#authBtn').classList.remove('hidden'); $('#userChip').classList.add('hidden');
