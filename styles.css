@@ -49,6 +49,18 @@ kbd{background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:2
 .stats{display:flex;gap:18px;margin-top:14px}.stats b{font-size:22px;display:block}
 .muted{color:var(--muted);font-size:13px}
 .row{display:flex;gap:8px;align-items:center;margin:8px 0}
+/* Liquid-glass animated toggles */
+.sw-list{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.sw-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border:1px solid var(--glass-brd);border-radius:16px;background:rgba(255,255,255,.05);cursor:pointer;transition:transform .15s,box-shadow .25s}
+.sw-row:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.sw-row b{display:block;font-size:14px}.sw-row i{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.tgl{position:relative;display:inline-block}
+.tgl input{position:absolute;opacity:0;width:0;height:0}
+.track{display:flex;align-items:center;width:58px;height:30px;border-radius:99px;background:rgba(128,128,140,.35);border:1px solid var(--glass-brd);transition:background .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;backdrop-filter:blur(8px);padding:3px}
+.knob{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#000;font-size:13px;font-weight:900;transform:translateX(0) scale(.7);opacity:.55;transition:transform .32s cubic-bezier(.34,1.8,.64,1),opacity .25s,background .3s,color .3s}
+.tgl input:checked + .track{background:var(--accent);box-shadow:0 0 16px var(--accent),inset 0 0 8px rgba(255,255,255,.25)}
+.tgl input:checked + .track .knob{transform:translateX(27px) scale(1);opacity:1;background:var(--accent-ink);color:var(--accent);animation:pop .35s cubic-bezier(.34,1.8,.64,1)}
+@keyframes pop{0%{transform:translateX(27px) scale(.4)}55%{transform:translateX(27px) scale(1.25)}100%{transform:translateX(27px) scale(1)}}
 .ver{border:1px solid var(--glass-brd);border-radius:14px;padding:12px}
 .tag2{font-size:11px;border:1px solid var(--glass-brd);border-radius:99px;padding:2px 8px}
 footer{text-align:center;color:var(--muted);padding:20px}

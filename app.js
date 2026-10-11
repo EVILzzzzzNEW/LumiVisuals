@@ -1,5 +1,4 @@
-// LumiVisuals web app — Supabase Auth/Postgres/Storage with localStorage fallback.
-// Works WITHOUT Supabase (demo mode). Add keys in supabase-config.js to go live.
+// LumiVisuals web app — accounts, profiles and playtime sync.
 (function(){
   const $ = s => document.querySelector(s);
   const store = {
@@ -13,7 +12,6 @@
     if (cfg && cfg.url && !cfg.url.includes('PASTE') && window.supabase) {
       state.sb = window.supabase.createClient(cfg.url, cfg.anonKey);
       state.useCloud = true;
-      $('#backendBadge').textContent = 'supabase mode';
       state.sb.auth.onAuthStateChange(async (ev, session)=>{
         const u = session && session.user;
         if(u){ await pullProfile(u.id, u.email); } else { state.user=null; render(); }
@@ -23,7 +21,7 @@
         if(u) await pullProfile(u.id, u.email);
       });
     }
-  }catch(e){ console.warn('supabase init failed, demo mode', e); }
+  }catch(e){ console.warn('cloud init failed, using this-device storage', e); }
 
   async function pullProfile(uid,email){
     let d = {};
@@ -97,7 +95,7 @@
       await pullProfile(data.user.id, data.user.email); closeAuth();
     } else {
       const users = store.get('demo_users',{});
-      if(!users[email] || users[email]!==pass){ $('#authErr').textContent='No account — press Register first (demo mode).'; return; }
+      if(!users[email] || users[email]!==pass){ $('#authErr').textContent='No account found — press Register first.'; return; }
       state.user={uid:'demo-'+btoa(email),email,name:store.get('name','Player'),avatar:store.get('avatar','public/logo.png'),hours:store.get('hours',0),version:store.get('version','minimal'),accent:store.get('accent','white'),ram:store.get('ram',4)};
       persistLocal(); closeAuth(); render();
     }
@@ -168,7 +166,7 @@
   $('#saveSettings').onclick=async()=>{
     const accent=$('#accentSel').value, ram=parseInt($('#ramInput').value||'4');
     store.set('accent',accent); store.set('ram',ram);
-    store.set('mods',{sodium:$('#optSodium').checked,lithium:$('#optLithium').checked,ferrite:$('#optFerrite').checked,saturnium:$('#optSaturnium').checked,shortcut:$('#optShortcut').checked});
+    store.set('mods',{sodium:$('#optSodium').checked,lithium:$('#optLithium').checked,ferrite:$('#optFerrite').checked,shortcut:$('#optShortcut').checked});
     if(state.user){ state.user.accent=accent; state.user.ram=ram; await pushProfile(); }
     applyAccent(accent);
     $('#setSaved').classList.remove('hidden'); setTimeout(()=>$('#setSaved').classList.add('hidden'),1500);
@@ -177,7 +175,7 @@
 
   $('#launcherDl').onclick=()=>{
     const v=(state.user&&state.user.version)||store.get('version','minimal');
-    $('#launcherDlSub').textContent='Selected: '+v.toUpperCase()+' — menu key '+(v==='minimal'?'Right Shift':'0')+'. Setup EXE lands here in Phase 2.';
+    $('#launcherDlSub').textContent='Selected: '+v.toUpperCase()+' — menu key '+(v==='minimal'?'Right Shift':'0')+'. Get the EXE from the GitHub release / launcher/dist folder.';
     document.querySelector('[data-tab=versions]').click();
   };
 

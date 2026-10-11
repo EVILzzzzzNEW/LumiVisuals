@@ -105,7 +105,7 @@
   <section id="tab-download" class="tab">
     <div class="glass card">
       <h2>Download</h2>
-      <p id="dlNote">The launcher setup will be published here. For now you can download the mods directly.</p>
+      <p id="dlNote">Download the launcher setup, or grab the mods directly.</p>
       <div class="dl-grid">
         <a class="dl glass" href="../mods/LumiVisuals-Minimal-3.0.jar" download>
           <b>LumiVisuals Minimal 3.0</b><span>MC 1.21.11 · Fabric · menu: Right Shift</span>
@@ -113,7 +113,7 @@
         <a class="dl glass" href="../mods/LumiVisuals-Classic-3.2.0.jar" download>
           <b>LumiVisuals Classic 3.2.0</b><span>MC 1.21.11 · Fabric · menu: 0</span>
         </a>
-        <button id="launcherDl" class="dl primary" type="button"><b>LumiVisuals Launcher Setup (.exe)</b><span id="launcherDlSub">Coming in Phase 2 — button wired, shows version + menu key</span></button>
+        <button id="launcherDl" class="dl primary" type="button"><b>LumiVisuals Launcher Setup (.exe)</b><span id="launcherDlSub">Single file — see your version + menu key below</span></button>
       </div>
       <h3>First launch checklist (launcher does this for you)</h3>
       <ol class="steps">
@@ -157,18 +157,15 @@
         <select id="accentSel"><option value="white">White</option><option value="black">Black</option></select>
       </label>
       <label>RAM for launcher (GB)<input id="ramInput" type="number" min="2" max="16" step="1" value="4" /></label>
-      <label class="row"><input type="checkbox" id="optSodium" checked /> Optimization: Sodium</label>
-      <label class="row"><input type="checkbox" id="optLithium" checked /> Optimization: Lithium</label>
-      <label class="row"><input type="checkbox" id="optFerrite" checked /> Optimization: FerriteCore</label>
-      <label class="row"><input type="checkbox" id="optSaturnium" /> Optimization: Saturnium</label>
-      <label class="row"><input type="checkbox" id="optShortcut" checked /> Installer: create desktop shortcut</label>
+      <div class="sw-list">
+        <label class="sw-row"><span><b>Sodium</b><i>rendering engine</i></span><span class="tgl"><input type="checkbox" id="optSodium" checked /><span class="track"><span class="knob">✓</span></span></span></label>
+        <label class="sw-row"><span><b>Lithium</b><i>game-logic boost</i></span><span class="tgl"><input type="checkbox" id="optLithium" checked /><span class="track"><span class="knob">✓</span></span></span></label>
+        <label class="sw-row"><span><b>FerriteCore</b><i>memory saver</i></span><span class="tgl"><input type="checkbox" id="optFerrite" checked /><span class="track"><span class="knob">✓</span></span></span></label>
+        <label class="sw-row"><span><b>Desktop shortcut</b><i>installer adds icon</i></span><span class="tgl"><input type="checkbox" id="optShortcut" checked /><span class="track"><span class="knob">✓</span></span></span></label>
+      </div>
       <button id="saveSettings" class="primary">Save settings</button>
       <span id="setSaved" class="ok hidden">Saved ✓</span>
       <p class="muted">Settings sync to your account when logged in, otherwise stored on this device. The launcher reads the same values.</p>
-    </div>
-    <div class="glass card">
-      <h2>Free hosting</h2>
-      <p>Deploy this folder to <b>Vercel</b> (free <code>*.vercel.app</code> subdomain) + <b>Supabase</b> backend. No hosting is literally "forever", but both free tiers stay up while active. See <code>README-DEPLOY.md</code>.</p>
     </div>
   </section>
 </main>
@@ -192,7 +189,7 @@
   </div>
 </div>
 
-<footer>© 2026 LumiVisuals · <span id="backendBadge">local demo mode</span></footer>
+<footer>© 2026 LumiVisuals</footer>
 <script src="supabase-config.js"></script>
 <script src="app.js"></script>
 </body>
