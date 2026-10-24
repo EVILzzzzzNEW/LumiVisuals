@@ -9,7 +9,7 @@
   function makeGuest(){
     return { uid:'guest-'+Math.random().toString(36).slice(2,10),
       name:'Guest'+Math.floor(1000+Math.random()*9000),
-      avatar:'public/logo.png', hours:store.get('hours',0),
+      avatar:'assets/logo.png', hours:store.get('hours',0),
       version:store.get('version','minimal'),
       accent:store.get('accent','white'), ram:store.get('ram',4) };
   }
